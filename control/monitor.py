@@ -66,6 +66,8 @@ def analyze_high_data_for_bogota():
     
     data = Data.objects.filter(
         base_time__gte=datetime.now() - timedelta(minutes=5))
+    
+    # agregamos los datos de la estación ubicada en Bogotá
     aggregation = data.annotate(check_value=Avg('avg_value')) \
         .select_related('station', 'measurement') \
         .select_related('station__user', 'station__location') \
@@ -85,7 +87,6 @@ def analyze_high_data_for_bogota():
 
         variable = item["measurement__name"]
         max_value = item["measurement__max_value"] or 0
-        min_value = item["measurement__min_value"] or 0
 
         country = item['station__location__country__name']
         state = item['station__location__state__name']
@@ -97,7 +98,7 @@ def analyze_high_data_for_bogota():
                 alert = True
                 
         if alert:
-            message = "ALERT {} {} {}".format(variable, min_value, max_value)
+            message = "BOGOTA ALERT {} {} > {} máxima permitida".format(variable, item["check_value"], max_value)
             topic = '{}/{}/{}/{}/in'.format(country, state, city, user)
             print(datetime.now(), "Sending alert to {} {}".format(topic, variable))
             client.publish(topic, message)
