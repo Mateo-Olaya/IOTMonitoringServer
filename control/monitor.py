@@ -92,7 +92,7 @@ def analyze_high_data_for_bogota():
         city = item['station__location__city__name']
         user = item['station__user__username']
 
-        if country == 'Colombia' and state == 'Cundinamarca' and city == 'Bogota' and variable == 'Temperatura':
+        if country == 'colombia' and state == 'cundinamarca' and city == 'bogota' and variable == 'temperatura':
             if item["check_value"] > 21:
                 alert = True
                 
