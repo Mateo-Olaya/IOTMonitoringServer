@@ -59,13 +59,13 @@ def analyze_data():
     print(alerts, "alertas enviadas")
     
 def analyze_high_data_for_bogota():
-    # Consulta todos los datos de los últimos 5 minutos, para Bogota
+    # Consulta todos los datos de la última hora, para Bogota
     # Si el valor promedio excede 21 grados, se envia un mensaje de alerta por temperaturas máximas
     
     print("Calculando alertas para datos de Bogotá...")
     
     data = Data.objects.filter(
-        base_time__gte=datetime.now() - timedelta(minutes=5))
+        base_time__gte=datetime.now() - timedelta(hours=1))
     
     # agregamos los datos de la estación ubicada en Bogotá
     aggregation = data.annotate(check_value=Avg('avg_value')) \
